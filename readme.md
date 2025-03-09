@@ -21,3 +21,88 @@ These statements are then used to build a structured [Select Query](src/main/kot
 ## Notes
 
 - The WHERE/HAVING clause can consist of complex conditions joined in various ways, so I decided to return the entire WHERE/HAVING clause as a string.
+
+### Example
+Given SQL:
+```sql
+SELECT author.name, count(book.id), sum(book.cost), (SELECT * from table1) as table1
+FROM customers, (SELECT * FROM author) as author
+LEFT JOIN book ON (author.id = book.author_id) 
+GROUP BY author.name 
+HAVING COUNT(*) > 1 AND SUM(book.cost) > 500
+offset 5
+LIMIT 10
+```
+Structured output:
+```json
+{
+    "columns": [
+        {
+            "type": "core.Column.Table",
+            "expression": "author.name"
+        },
+        {
+            "type": "core.Column.Table",
+            "expression": "count(book.id)"
+        },
+        {
+            "type": "core.Column.Table",
+            "expression": "sum(book.cost)"
+        },
+        {
+            "type": "core.Column.SubQuery",
+            "query": {
+                "columns": [
+                    {
+                        "type": "core.Column.Table",
+                        "expression": "*"
+                    }
+                ],
+                "from": [
+                    {
+                        "type": "core.Source.Table",
+                        "tableName": "table1"
+                    }
+                ]
+            },
+            "alias": "table1"
+        }
+    ],
+    "from": [
+        {
+            "type": "core.Source.Table",
+            "tableName": "customers"
+        },
+        {
+            "type": "core.Source.SubQuery",
+            "query": {
+                "columns": [
+                    {
+                        "type": "core.Column.Table",
+                        "expression": "*"
+                    }
+                ],
+                "from": [
+                    {
+                        "type": "core.Source.Table",
+                        "tableName": "author"
+                    }
+                ]
+            },
+            "alias": "author"
+        }
+    ],
+    "joins": [
+        {
+            "type": "left",
+            "tableName": "book",
+            "on": "author.id = book.author_id"
+        }
+    ],
+    "groupBy": [
+        "author.name"
+    ],
+    "limit": 10,
+    "offset": 5
+}
+```
