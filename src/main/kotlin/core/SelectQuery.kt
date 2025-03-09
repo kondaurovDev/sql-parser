@@ -47,7 +47,7 @@ data class Join(
 
     companion object {
         fun fromString(input: String): Join {
-            val parts = input.split(" ON ")
+            val parts = input.split(" ON ", ignoreCase = true)
             if (parts.size != 2) throw Error("Invalid join structure '$input'")
             val leftPart = parts[0].split(" ")
             if (leftPart.size != 3) throw Error("Invalid join structure '$input'. Left part must consist of three words")

@@ -45,7 +45,7 @@ class SelectQueryTest {
                 ),
             ),
             joins = listOf(
-                "LEFT JOIN table1 on table1.id = sub.a1"
+                Join(Join.JoinType.left, "table1", "table1.id = sub.a1")
             )
         )
         assertEquals(expected, actual)
