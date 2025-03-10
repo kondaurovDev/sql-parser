@@ -57,6 +57,10 @@ data class QueryStatements(
         return statements.find { it.first == SelectKeyword.Where }?.second?.substring("where".length)?.trim()
     }
 
+    fun getHaving(): String? {
+        return statements.find { it.first == SelectKeyword.Having }?.second?.substring("having".length)?.trim()
+    }
+
     fun getGroupBy(): List<String>? {
         val content = statements.find { it.first == SelectKeyword.GroupBy }?.second?.substring("group By".length)?.trim()
 

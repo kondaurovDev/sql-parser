@@ -9,6 +9,7 @@ data class SelectQuery(
     val joins: List<Join>? = null,
     val where: String? = null,
     val groupBy: List<String>? = null,
+    val having: String? = null,
     val orderBy: List<String>? = null,
     val limit: Int? = null,
     val offset: Int? = null
@@ -26,6 +27,7 @@ data class SelectQuery(
                 joins = statements.getJoins()?.map { Join.fromString(it) },
                 where = statements.getWhere(),
                 groupBy = statements.getGroupBy(),
+                having = statements.getHaving(),
                 orderBy = statements.getOrderBy(),
                 limit = statements.getLimit(),
                 offset = statements.getOffset()
